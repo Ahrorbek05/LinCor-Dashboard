@@ -1,22 +1,40 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import Sidebar from './components/sidebar/Sidebar';
-import Settings from './pages/Settings';
 import Students from './pages/Students';
 import Sales from './pages/Sales';
+import VideoCourses from './pages/Courses';
+import Loader from './components/loader/Loader';
+import './App.css'
 
 const App = () => {
+  const [loading, setLoading] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [location]);
+
   return (
     <div className="flex">
       <Sidebar />
       <div className="flex-grow">
-        <Routes>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/students" element={<Students />} />
-          <Route path="/sales" element={<Sales />} />
-        </Routes>
+        {loading ? (
+          <Loader />
+        ) : (
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/students" element={<Students />} />
+            <Route path="/sales" element={<Sales />} />
+            <Route path="/courses" element={<VideoCourses />} />
+          </Routes>
+        )}
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import React from 'react';
 import './custom.css'
+import Pagination from '../pagination/Pagination';
 
 const StatusBadge = ({ status }) => {
     const getStyle = (status) => {
@@ -79,93 +80,97 @@ const StudentRatings = () => {
         },
         {
             id: 4,
-            name: 'Pennywise',
+            name: 'Bluenose',
             image: 'https://picsum.photos/200/300',
-            status: "O'rta",
-            progress: 57,
-            change: -8,
-            courses: 10,
+            status: "Boshlang'ich",
+            progress: 40,
+            change: 4,
+            courses: 2,
             price: '700 000'
         },
         {
             id: 5,
-            name: 'Pennywise',
+            name: 'Bluenose',
             image: 'https://picsum.photos/200/300',
-            status: "O'rta",
-            progress: 57,
-            change: -8,
-            courses: 10,
+            status: "Boshlang'ich",
+            progress: 40,
+            change: 4,
+            courses: 2,
             price: '700 000'
         },
-
+        {
+            id: 6,
+            name: 'Bluenose',
+            image: 'https://picsum.photos/200/300',
+            status: "Boshlang'ich",
+            progress: 40,
+            change: 4,
+            courses: 2,
+            price: '700 000'
+        }
     ];
 
     return (
-        <div className="p-6">
+        <div className="">
             {/* Header */}
-            <div className="mb-6">
+            <div className="mb-4">
                 <h1 className="text-2xl font-semibold mb-1">O'quvchilar reytingi</h1>
                 <p className="text-sm text-gray-500">O'quvchilarning monitoring ro'yxati</p>
             </div>
 
             {/* Table */}
-            <div className="overflow-auto max-h-72 custom-scroll">
+            <div className="w-full border rounded-lg overflow-hidden">
                 <table className="w-full">
-                    <thead>
+                    <thead className="bg-gray-100">
                         <tr className="border-b">
-                            <th className="text-left py-4">O'quvchilar</th>
-                            <th className="text-left py-4">Status</th>
-                            <th className="text-left py-4">Darajasi</th>
-                            <th className="text-left py-4">Mavjud kurslar</th>
-                            <th className="text-left py-4">Barcha to'lovlar</th>
+                            <th className="text-left py-4 px-3">O'quvchilar</th>
+                            <th className="text-left py-4 px-3">Status</th>
+                            <th className="text-left py-4 px-3">Darajasi</th>
+                            <th className="text-left py-4 px-3">Mavjud kurslar</th>
+                            <th className="text-left py-4 px-3">Barcha to'lovlar</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {students.map((student) => (
-                            <tr key={student.id} className="border-b">
-                                <td className="py-4">
-                                    <div className="flex items-center gap-3">
-                                        <img
-                                            src={student.image}
-                                            alt="Student"
-                                            className="w-10 h-10 rounded-full"
-                                        />
-                                        <span>{student.name}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <StatusBadge status={student.status} />
-                                </td>
-                                <td>
-                                    <div className="flex items-center gap-4">
-                                        <ProgressBar progress={student.progress} />
-                                        <PercentageChange
-                                            value={student.progress}
-                                            change={student.change}
-                                        />
-                                    </div>
-                                </td>
-                                <td>{student.courses}</td>
-                                <td>{student.price} <span className="text-sm text-gray-500">so'm</span></td>
-                            </tr>
-                        ))}
-                    </tbody>
                 </table>
+                <div className="max-h-48 overflow-y-auto custom-scroll">
+                    <table className="w-full">
+                        <tbody>
+                            {students.map((student) => (
+                                <tr key={student.id} className="border-b">
+                                    <td className="py-3 px-3">
+                                        <div className="flex items-center gap-3">
+                                            <img
+                                                src={student.image}
+                                                alt="Student"
+                                                className="w-10 h-10 rounded-full"
+                                            />
+                                            <span>{student.name}</span>
+                                        </div>
+                                    </td>
+                                    <td className="px-3">
+                                        <StatusBadge status={student.status} />
+                                    </td>
+                                    <td className="px-3">
+                                        <div className="flex items-center gap-4">
+                                            <ProgressBar progress={student.progress} />
+                                            <PercentageChange
+                                                value={student.progress}
+                                                change={student.change}
+                                            />
+                                        </div>
+                                    </td>
+                                    <td className="px-3">{student.courses}</td>
+                                    <td className="px-3">
+                                        {student.price} <span className="text-sm text-gray-500">so'm</span>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             {/* Pagination limit 7 ta */}
-            <div className="flex items-center gap-2 mt-6">
-                <span className="text-sm text-gray-500">Oldingi sahifa</span>
-                {[1, 2, 3, 4, 5, 6, 7].map((page) => (
-                    <button
-                        key={page}
-                        className={`w-8 h-8 rounded-lg ${page === 1 ? 'bg-gray-900 text-white' : 'hover:bg-gray-100'}`}
-                    >
-                        {page}
-                    </button>
-                ))}
-                <span className="text-sm text-gray-500">Keyingi sahifa</span>
-            </div>
+            <Pagination></Pagination>
         </div>
     );
 };

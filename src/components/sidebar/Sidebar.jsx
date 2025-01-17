@@ -4,14 +4,13 @@ import { LayoutGrid, Users, Video, DollarSign, Settings, LogOut } from "lucide-r
 
 function Sidebar() {
     const menuItems = [
-        { id: "dashboard", icon: LayoutGrid, text: "Dashboard", path: "/dashboard" },
+        { id: "dashboard", icon: LayoutGrid, text: "Dashboard", path: "/" },
         { id: "students", icon: Users, text: "O'quvchilar", path: "/students" },
         { id: "courses", icon: Video, text: "Video kurslar", path: "/courses" },
         { id: "sales", icon: DollarSign, text: "Sales", path: "/sales" },
     ];
 
     const bottomItems = [
-        { id: "settings", icon: Settings, text: "Settings", path: "/settings" },
         { id: "logout", icon: LogOut, text: "Chiqish", path: "/logout", className: "text-red-500" },
     ];
 
@@ -20,7 +19,7 @@ function Sidebar() {
             <NavLink
                 to={item.path}
                 className={({ isActive }) =>
-                    `flex items-center w-full px-3 py-2 my-4 text-left rounded-lg transition-colors ${isActive ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-gray-100"
+                    `flex items-center w-full px-3 py-2 my-1 text-left rounded-lg transition-colors ${isActive ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-gray-100"
                     } ${item.className || ""}`
                 }
             >

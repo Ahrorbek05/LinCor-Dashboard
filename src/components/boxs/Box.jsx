@@ -2,7 +2,7 @@ import React from 'react';
 
 const StatCard = ({ number, label }) => {
     return (
-        <div className="w-[350px] h-32 rounded-lg relative overflow-hidden bg-[#5B6B54] flex flex-col justify-center p-6 text-white">
+        <div className="w-[320px] h-32 rounded-lg relative overflow-hidden bg-[#5B6B54] flex flex-col justify-center p-6 text-white">
             <div className="relative z-10">
                 <div className="text-4xl font-bold mb-1">{number}</div>
                 <div className="text-lg">{label}</div>

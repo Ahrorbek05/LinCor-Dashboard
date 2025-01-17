@@ -35,7 +35,7 @@ const Dashboard = () => {
                 </div>
 
                 <div className="mt-4 mb-10">
-                    <h1 className="text-black text-[35px] font-[600] mb-4">Statistika</h1>
+                    <h1 className="text-black text-[32px] font-[600] mb-4">Statistika</h1>
                     <div className="box">
                         <Box />
                     </div>
