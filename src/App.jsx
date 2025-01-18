@@ -5,6 +5,7 @@ import Sidebar from './components/sidebar/Sidebar';
 import Students from './pages/Students';
 import Sales from './pages/Sales';
 import VideoCourses from './pages/Courses';
+import VideoSection from './components/videoSection/VideoSection';
 import Loader from './components/loader/Loader';
 import './App.css'
 
@@ -32,7 +33,8 @@ const App = () => {
             <Route path="/" element={<Dashboard />} />
             <Route path="/students" element={<Students />} />
             <Route path="/sales" element={<Sales />} />
-            <Route path="/courses" element={<VideoCourses />} />
+              <Route path="/courses" element={<VideoCourses />} />
+              <Route path='/textbooks' element={<VideoSection />}></Route>
           </Routes>
         )}
       </div>

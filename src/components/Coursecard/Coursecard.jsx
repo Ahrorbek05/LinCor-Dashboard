@@ -1,11 +1,19 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 const Coursecard = () => {
   const cursobject = [
     { Cursname: "Boshlangich daraja", description: "siz yigirma beshtadan darslarni olasiz yigirma beshtadan ortiq darslarni olasiz", coursedars: "24 Video", workbook: "Workbook", narx: "320 000 so'm" },
     { Cursname: "O'rta daraja", description: "siz yigirma beshtadan darslarni olasiz yigirma beshtadan ortiq darslarni olasiz", coursedars: "24 Video", workbook: "Workbook", narx: "320 000 so'm" },
     { Cursname: "Yuqori daraja", description: "siz yigirma beshtadan darslarni olasiz yigirma beshtadan ortiq darslarni olasiz", coursedars: "24 Video", workbook: "Workbook", narx: "320 000 so'm" }
-  ]
+  ];
+  const navigate = useNavigate();
+
+  const handleClass = () => {
+    navigate('/textbooks')
+  }
+
+
   return (
     <div>
       <h1 className='mt-6 text-2xl font-bold'>Kurslar</h1>
@@ -57,7 +65,7 @@ const Coursecard = () => {
             <p className="text-[18px] font-bold mt-4">{value.narx}</p>
 
 
-            <button className="bg-white text-blue-500 font-semibold text-lg px-5 py-1 mt-4 rounded-full shadow-md hover:bg-gray-100">
+            <button onClick={handleClass} className="bg-white text-blue-500 font-semibold text-lg px-5 py-1 mt-4 rounded-full shadow-md hover:bg-gray-100">
               Darsliklar
             </button>
           </div>

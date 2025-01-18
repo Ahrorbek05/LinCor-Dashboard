@@ -1,5 +1,6 @@
 import React from 'react';
 import { Plus, Search, Bell, Play, Pencil, Trash2 } from 'lucide-react';
+import Workbooks from '../../components/workbook/Workbook'
 
 const VideoSection = () => {
     const audioTracks = [
@@ -96,10 +97,13 @@ const VideoSection = () => {
                                     <Trash2 size={20} />
                                 </button>
                             </div>
+
                         </div>
                     ))}
                 </div>
             </div>
+            <Workbooks></Workbooks>
+
         </div>
     );
 };
