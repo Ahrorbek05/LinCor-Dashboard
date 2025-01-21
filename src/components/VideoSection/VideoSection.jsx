@@ -1,34 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Plus, Search, Bell, Play, Pencil, Trash2 } from 'lucide-react';
-import Workbooks from '../../components/workbook/Workbook'
+import Workbooks from '../../components/workbook/Workbook';
+import API from '../../api';
 
 const VideoSection = () => {
-    const audioTracks = [
-        {
-            id: 1,
-            title: "Bo'g'in Oxirida Ikkitalik Undosh Bo'lsa Keyingi Bo'g'in",
-            trackNumber: "01",
-            duration: "12:34",
-        },
-        {
-            id: 2,
-            title: "Ikkinchi Dars: To'g'ri Talaffuz",
-            trackNumber: "02",
-            duration: "10:12",
-        },
-        {
-            id: 3,
-            title: "Uchinchi Dars: Qoidalar",
-            trackNumber: "03",
-            duration: "08:45",
-        },
-        {
-            id: 4,
-            title: "To'rtinchi Dars: Amaliy Misollar",
-            trackNumber: "04",
-            duration: "15:30",
-        },
-    ];
+    const [audioTracks, setAudioTracks] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchAudioTracks = async () => {
+            try {
+                const response = await API.get('/category'); // To'g'ri API manzilini kiriting
+                setAudioTracks(response.data.audioTracks || []);
+            } catch (err) {
+                setError('Ma\'lumotlarni yuklashda xatolik yuz berdi.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchAudioTracks();
+    }, []);
+
+    if (loading) {
+        return <div className="flex justify-center items-center h-64">Yuklanmoqda...</div>;
+    }
+
+    if (error) {
+        return <div className="text-red-500 text-center">{error}</div>;
+    }
 
     return (
         <div className="p-6">
@@ -97,13 +98,11 @@ const VideoSection = () => {
                                     <Trash2 size={20} />
                                 </button>
                             </div>
-
                         </div>
                     ))}
                 </div>
             </div>
-            <Workbooks></Workbooks>
-
+            <Workbooks />
         </div>
     );
 };

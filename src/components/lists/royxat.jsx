@@ -1,5 +1,5 @@
 import React from 'react';
-import './custom.css'
+import './custom.css';
 import Pagination from '../pagination/Pagination';
 
 const StatusBadge = ({ status }) => {
@@ -27,7 +27,7 @@ const ProgressBar = ({ progress }) => {
     return (
         <div className="w-32 h-2 bg-gray-200 rounded-full">
             <div
-                className="h-full bg-gray-600 rounded-full"
+                className="h-full bg-blue-600 rounded-full"
                 style={{ width: `${progress}%` }}
             />
         </div>
@@ -111,11 +111,21 @@ const StudentRatings = () => {
     ];
 
     return (
-        <div className="">
+        <div className="p-4">
             {/* Header */}
-            <div className="mb-4">
-                <h1 className="text-2xl font-semibold mb-1">O'quvchilar reytingi</h1>
-                <p className="text-sm text-gray-500">O'quvchilarning monitoring ro'yxati</p>
+            <div className="flex justify-between items-center mb-6">
+                <div>
+                    <h1 className="text-2xl font-semibold">O'quvchilar reytingi</h1>
+                    <p className="text-sm text-gray-500">O'quvchilarning monitoring ro'yxati</p>
+                </div>
+                <div className="flex items-center gap-2">
+                    <input
+                        type="text"
+                        placeholder="O'quvchilarni qidirish"
+                        className="input input-bordered w-full max-w-xs rounded-md px-6 py-1 border-2 outline-none"
+                    />
+                    <button className="btn btn-outline border-2 px-10 text-[18px] font-semibold rounded-md">Filter</button>
+                </div>
             </div>
 
             {/* Table */}
@@ -169,8 +179,10 @@ const StudentRatings = () => {
                 </div>
             </div>
 
-            {/* Pagination limit 7 ta */}
-            <Pagination></Pagination>
+            {/* Pagination */}
+            <div className="mt-4">
+                <Pagination />
+            </div>
         </div>
     );
 };
