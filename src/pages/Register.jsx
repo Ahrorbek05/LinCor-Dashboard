@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import API from "../api";
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -31,7 +31,7 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(null); 
+        setError(null);
         setSuccess(null);
 
         const formDataToSend = new FormData();
@@ -40,17 +40,18 @@ const Register = () => {
         }
 
         try {
-            const response = await axios.post(
-                "http://localhost:8000/api/v1/auth/register",
-                formDataToSend,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
-            setSuccess("Foydalanuvchi muvaffaqiyatli ro'yxatdan o'tdi!");
-            console.log("User registered:", response.data);
+            const response = await API.post("/register", formDataToSend, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+
+            if (response.data.success) {
+                setSuccess("Foydalanuvchi muvaffaqiyatli ro'yxatdan o'tdi!");
+                console.log("User registered:", response.data);
+            } else {
+                setError("Ro'yxatdan o'tishda xatolik yuz berdi.");
+            }
         } catch (error) {
             if (error.response) {
                 setError(
@@ -80,64 +81,35 @@ const Register = () => {
                     </div>
                 )}
                 <form onSubmit={handleSubmit}>
+                    {[
+                        { id: "firstName", label: "First Name", type: "text" },
+                        { id: "lastName", label: "Last Name", type: "text" },
+                        { id: "password", label: "Password", type: "password" },
+                        { id: "phone", label: "Phone", type: "tel" },
+                    ].map((field) => (
+                        <div key={field.id} className="mb-4">
+                            <label
+                                className="block text-sm font-medium text-gray-700"
+                                htmlFor={field.id}
+                            >
+                                {field.label}
+                            </label>
+                            <input
+                                type={field.type}
+                                id={field.id}
+                                name={field.id}
+                                value={formData[field.id]}
+                                onChange={handleChange}
+                                required
+                                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                            />
+                        </div>
+                    ))}
                     <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700" htmlFor="firstName">
-                            First Name
-                        </label>
-                        <input
-                            type="text"
-                            id="firstName"
-                            name="firstName"
-                            value={formData.firstName}
-                            onChange={handleChange}
-                            required
-                            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700" htmlFor="lastName">
-                            Last Name
-                        </label>
-                        <input
-                            type="text"
-                            id="lastName"
-                            name="lastName"
-                            value={formData.lastName}
-                            onChange={handleChange}
-                            required
-                            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700" htmlFor="password">
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            required
-                            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700" htmlFor="phone">
-                            Phone
-                        </label>
-                        <input
-                            type="tel"
-                            id="phone"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            required
-                            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700" htmlFor="avatar">
+                        <label
+                            className="block text-sm font-medium text-gray-700"
+                            htmlFor="avatar"
+                        >
                             Avatar (Image)
                         </label>
                         <input
@@ -145,12 +117,14 @@ const Register = () => {
                             id="avatar"
                             name="avatar"
                             onChange={handleChange}
-                            required
                             className="mt-1 p-2 w-full border border-gray-300 rounded-md"
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700" htmlFor="address">
+                        <label
+                            className="block text-sm font-medium text-gray-700"
+                            htmlFor="address"
+                        >
                             Address
                         </label>
                         <textarea
