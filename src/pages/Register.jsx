@@ -1,146 +1,136 @@
 import React, { useState } from "react";
+import Cookies from "js-cookie";
 import API from "../api";
 
-const Register = () => {
+const RegisterPage = () => {
     const [formData, setFormData] = useState({
-        firstName: "",
-        lastName: "",
+        firstname: "",
+        lastname: "",
         password: "",
         phone: "",
-        avatar: null,
         address: "",
+        avatar: null,
     });
 
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
-
     const handleChange = (e) => {
-        const { name, value, type, files } = e.target;
-        if (type === "file") {
-            setFormData((prevState) => ({
-                ...prevState,
-                [name]: files[0],
-            }));
-        } else {
-            setFormData((prevState) => ({
-                ...prevState,
-                [name]: value,
-            }));
-        }
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleFileChange = (e) => {
+        setFormData({ ...formData, avatar: e.target.files[0] });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(null);
-        setSuccess(null);
 
-        const formDataToSend = new FormData();
-        for (const key in formData) {
-            formDataToSend.append(key, formData[key]);
+        const data = new FormData();
+        data.append("firstname", formData.firstname);
+        data.append("lastname", formData.lastname);
+        data.append("password", formData.password);
+        data.append("phone", formData.phone);
+        data.append("address", formData.address);
+        if (formData.avatar) {
+            data.append("avatar", formData.avatar);
         }
 
         try {
-            const response = await API.post("/register", formDataToSend, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
+            const response = await API.post("/auth/register", data);
 
-            if (response.data.success) {
-                setSuccess("Foydalanuvchi muvaffaqiyatli ro'yxatdan o'tdi!");
-                console.log("User registered:", response.data);
-            } else {
-                setError("Ro'yxatdan o'tishda xatolik yuz berdi.");
-            }
+            const { accessToken, refreshToken } = response.data;
+
+            localStorage.setItem("accessToken", accessToken);
+            Cookies.set("refreshToken", refreshToken, { expires: 7 });
+
+            alert("Ro'yxatdan o'tish muvaffaqiyatli!");
+            setFormData({
+                firstname: "",
+                lastname: "",
+                password: "",
+                phone: "",
+                address: "",
+                avatar: null,
+            });
         } catch (error) {
-            if (error.response) {
-                setError(
-                    `Xatolik: ${error.response.data.message || "Noma'lum xatolik"}`
-                );
-            } else if (error.request) {
-                setError("CORS xatosi: Backend javob bermayapti yoki ruxsat yo'q.");
-            } else {
-                setError(`Xatolik: ${error.message}`);
-            }
-            console.error("Error registering user:", error);
+            alert(`Ro'yxatdan o'tishda xato yuz berdi: ${error.response?.data?.message || error.message}`);
         }
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
+        <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-                <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
-                {error && (
-                    <div className="mb-4 p-2 bg-red-100 text-red-700 border border-red-300 rounded-md">
-                        {error}
-                    </div>
-                )}
-                {success && (
-                    <div className="mb-4 p-2 bg-green-100 text-green-700 border border-green-300 rounded-md">
-                        {success}
-                    </div>
-                )}
-                <form onSubmit={handleSubmit}>
-                    {[
-                        { id: "firstName", label: "First Name", type: "text" },
-                        { id: "lastName", label: "Last Name", type: "text" },
-                        { id: "password", label: "Password", type: "password" },
-                        { id: "phone", label: "Phone", type: "tel" },
-                    ].map((field) => (
-                        <div key={field.id} className="mb-4">
-                            <label
-                                className="block text-sm font-medium text-gray-700"
-                                htmlFor={field.id}
-                            >
-                                {field.label}
-                            </label>
-                            <input
-                                type={field.type}
-                                id={field.id}
-                                name={field.id}
-                                value={formData[field.id]}
-                                onChange={handleChange}
-                                required
-                                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-                            />
-                        </div>
-                    ))}
-                    <div className="mb-4">
-                        <label
-                            className="block text-sm font-medium text-gray-700"
-                            htmlFor="avatar"
-                        >
-                            Avatar (Image)
-                        </label>
+                <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">Ro'yxatdan O'tish</h1>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Ism</label>
                         <input
-                            type="file"
-                            id="avatar"
-                            name="avatar"
+                            type="text"
+                            name="firstname"
+                            value={formData.firstname}
                             onChange={handleChange}
-                            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                            required
+                            className="mt-1 block w-full rounded-md p-2 border-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         />
                     </div>
-                    <div className="mb-4">
-                        <label
-                            className="block text-sm font-medium text-gray-700"
-                            htmlFor="address"
-                        >
-                            Address
-                        </label>
-                        <textarea
-                            id="address"
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Familiya</label>
+                        <input
+                            type="text"
+                            name="lastname"
+                            value={formData.lastname}
+                            onChange={handleChange}
+                            required
+                            className="mt-1 block w-full p-2 border-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Parol</label>
+                        <input
+                            type="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                            className="mt-1 block w-full p-2 border-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Telefon</label>
+                        <input
+                            type="text"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            required
+                            className="mt-1 block w-full p-2 border-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Manzil</label>
+                        <input
+                            type="text"
                             name="address"
                             value={formData.address}
                             onChange={handleChange}
                             required
-                            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                            className="mt-1 block w-full p-2 border-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Avatar</label>
+                        <input
+                            type="file"
+                            name="avatar"
+                            onChange={handleFileChange}
+                            required
+                            className="mt-1 block w-full text-sm text-gray-500"
                         />
                     </div>
                     <button
                         type="submit"
-                        className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none"
+                        className="w-full py-2 px-4 p-2 border-2 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                        Register
+                        Ro'yxatdan O'tish
                     </button>
                 </form>
             </div>
@@ -148,4 +138,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default RegisterPage;
