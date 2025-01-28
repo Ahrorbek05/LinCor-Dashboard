@@ -14,7 +14,7 @@ import Login from './pages/Login';
 const App = () => {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
-  const isAuthenticated = localStorage.getItem("token");
+  const isAuthenticated = localStorage.getItem("accessToken");
 
   useEffect(() => {
     setLoading(true);

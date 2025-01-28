@@ -1,7 +1,7 @@
 import React from 'react'
 import { Bell, Search } from 'lucide-react'
 import Coursecard from '../components/Coursecard/Coursecard'
-import Coursecardtwo from '../components/Coursecard/Coursecardtwo'
+// import Coursecardtwo from '../components/Coursecard/Coursecardtwo'
 
 const Courses = () => {
   return (
@@ -37,7 +37,7 @@ const Courses = () => {
         <div className='container max-w-[1240px] mt-4 mx-auto'>
           <Coursecard></Coursecard>
 
-          <Coursecardtwo></Coursecardtwo>
+          {/* <Coursecardtwo></Coursecardtwo> */}
         </div>
       </div>
     </div>
