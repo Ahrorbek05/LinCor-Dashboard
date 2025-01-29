@@ -1,30 +1,36 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Plus, Search, Bell, Play, Pencil, Trash2 } from 'lucide-react';
 import Workbooks from '../../components/workbook/Workbook';
 import API from '../../api';
 import VideoModal from '../videomodal/videoModal';
 
 const VideoSection = () => {
+    const location = useLocation();
+    const selectedCourse = location.state?.selectedCourse;
+
     const [videos, setVideos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedVideo, setSelectedVideo] = useState(null);
 
     useEffect(() => {
-        const fetchVideos = async () => {
-            try {
-                const response = await API.get('/video');
-                setVideos(response.data || []);
-            } catch (err) {
-                setError('Ma\'lumotlarni yuklashda xatolik yuz berdi.');
-                setVideos([]);
-            } finally {
-                setLoading(false);
-            }
-        };
+        if (selectedCourse) {
+            const fetchVideos = async () => {
+                try {
+                    const response = await API.get(`/video?courseId=${selectedCourse.id}`);
+                    setVideos(response.data || []);
+                } catch (err) {
+                    setError('Ma\'lumotlarni yuklashda xatolik yuz berdi.');
+                    setVideos([]);
+                } finally {
+                    setLoading(false);
+                }
+            };
 
-        fetchVideos();
-    }, []);
+            fetchVideos();
+        }
+    }, [selectedCourse]);
 
     const handleVideoClick = (videoUrl) => {
         setSelectedVideo(videoUrl);
@@ -73,7 +79,8 @@ const VideoSection = () => {
             </div>
 
             <div className="mb-6">
-                <h1 className="text-2xl font-bold text-gray-800">Boshlang'ich daraja</h1>
+                <h1 className="text-2xl font-bold text-gray-800">{selectedCourse?.category_name}</h1>
+                <p className="text-gray-600">{selectedCourse?.category_desc}</p>
             </div>
 
             <div className="flex items-center justify-between mb-6 border-t pt-6">
