@@ -94,7 +94,7 @@ const VideoSection = () => {
         <div className="flex items-center gap-4">
             <button
                 className="w-10 h-10 flex items-center justify-center bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
-                onClick={() => handleVideoClick(video.video_path)}
+                onClick={() => handleVideoClick(video.videoUrl)}
             >
                 <Play size={20} />
             </button>
