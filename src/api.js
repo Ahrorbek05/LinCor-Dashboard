@@ -1,7 +1,6 @@
-import axios from "axios";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-
+import axios from "axios";
 const API = axios.create({
     baseURL: "http://38.242.195.171:8000/api/v1",
 });
