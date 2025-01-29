@@ -4,6 +4,8 @@ import Box from '../components/boxs/Box';
 import StudentRatings from '../components/lists/royxat';
 
 const Dashboard = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+
     return (
         <div className="flex">
             <div className="container max-w-[1200px] mt-4 mx-auto">
@@ -20,11 +22,11 @@ const Dashboard = () => {
                         <span className="flex items-center gap-4">
                             <img
                                 className="w-12 h-12 rounded-full"
-                                src="https://picsum.photos/200/300"
+                                src={user?.avatar || "https://picsum.photos/200/300"}
                                 alt="Admin"
                             />
                             <span>
-                                <h3 className="text-[#4C4C4C] text-[14px] font-[600]">George Kim</h3>
+                                <h3 className="text-[#4C4C4C] text-[14px] font-[600]">{user?.firstname || "Foydalanuvchi"}</h3>
                                 <p className="text-[#B3B3B3] text-[14px] font-[500]">Admin</p>
                             </span>
                         </span>

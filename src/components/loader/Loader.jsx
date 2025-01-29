@@ -1,16 +1,26 @@
-// components/Loader.jsx
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { motion } from "framer-motion";
 
 const Loader = () => {
     return (
-        <div className="flex items-center justify-center h-screen">
+        <div className="flex items-center justify-center h-screen bg-gray-100">
             <motion.div
-                className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin"
+                className="relative w-16 h-16 flex items-center justify-center"
                 initial={{ scale: 0 }}
-                animate={{ scale: 1, rotate: 360 }}
-                transition={{ duration: 0.8, repeat: Infinity }}
-            />
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+            >
+                <motion.div
+                    className="absolute w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full"
+                    animate={{ rotate: 360 }}
+                    transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                />
+                <motion.div
+                    className="absolute w-16 h-16 border-4 border-gray-300 border-b-transparent rounded-full"
+                    animate={{ rotate: -360 }}
+                    transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+                />
+            </motion.div>
         </div>
     );
 };

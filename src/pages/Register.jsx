@@ -40,6 +40,12 @@ const RegisterPage = () => {
             localStorage.setItem("accessToken", accessToken);
             Cookies.set("refreshToken", refreshToken, { expires: 7 });
 
+            // localStorage.setItem("user", JSON.stringify({
+            //     firstname: user.firstname,
+            //     avatar: user.avatar,
+
+            // }));
+
             alert("Ro'yxatdan o'tish muvaffaqiyatli!");
 
             setFormData({
