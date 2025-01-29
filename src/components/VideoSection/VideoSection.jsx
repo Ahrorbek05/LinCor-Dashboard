@@ -15,6 +15,7 @@ const VideoSection = () => {
             try {
                 const response = await API.get('/video');
                 setVideos(response.data || []);
+                console.log(response.data || [])
             } catch (err) {
                 setError('Ma\'lumotlarni yuklashda xatolik yuz berdi.');
                 setVideos([]);
@@ -85,39 +86,35 @@ const VideoSection = () => {
 
             <div className="bg-white p-4 rounded-lg border">
                 <div className="h-[230px] overflow-y-auto space-y-3">
-                    {videos.length > 0 ? (
-                        videos.map((video) => (
-                            <div
-                                key={video.id}
-                                className="flex items-center justify-between bg-gray-50 p-3 rounded-lg hover:shadow-md transition"
-                            >
-                                <div className="flex items-center gap-4">
-                                    <button
-                                        className="w-10 h-10 flex items-center justify-center bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
-                                        onClick={() => handleVideoClick(video.videoUrl)}
-                                    >
-                                        <Play size={20} />
-                                    </button>
-                                    <span className="text-gray-800 font-medium text-sm">
-                                        {video.title}
-                                    </span>
-                                </div>
+                    {videos?.data && Array.isArray(videos.data) && videos.data.map((video) => (
+    <div
+        key={video.id}
+        className="flex items-center justify-between bg-gray-50 p-3 rounded-lg hover:shadow-md transition"
+    >
+        <div className="flex items-center gap-4">
+            <button
+                className="w-10 h-10 flex items-center justify-center bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
+                onClick={() => handleVideoClick(video.video_path)}
+            >
+                <Play size={20} />
+            </button>
+            <span className="text-gray-800 font-medium text-sm">
+                {video.title}
+            </span>
+        </div>
 
-                                <div className="flex items-center gap-6">
-                                    <span className="text-gray-500 text-sm">{video.trackNumber}</span>
-                                    <span className="text-gray-500 text-sm">{video.duration}</span>
-                                    <button className="p-2 text-gray-400 hover:text-blue-500 transition">
-                                        <Pencil size={20} />
-                                    </button>
-                                    <button className="p-2 text-gray-400 hover:text-red-500 transition">
-                                        <Trash2 size={20} />
-                                    </button>
-                                </div>
-                            </div>
-                        ))
-                    ) : (
-                        <div className="text-center text-gray-500">Video darsliklar mavjud emas.</div>
-                    )}
+        <div className="flex items-center gap-6">
+            <span className="text-gray-500 text-sm">{video.id}</span>
+            <button className="p-2 text-gray-400 hover:text-blue-500 transition">
+                <Pencil size={20} />
+            </button>
+            <button className="p-2 text-gray-400 hover:text-red-500 transition">
+                <Trash2 size={20} />
+            </button>
+        </div>
+    </div>
+))}
+
                 </div>
             </div>
             <Workbooks />
