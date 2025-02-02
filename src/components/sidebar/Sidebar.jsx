@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { LayoutGrid, Users, Video, DollarSign, Settings, LogOut } from "lucide-react";
 
 function Sidebar() {
+    const navigate = useNavigate();
+
     const menuItems = [
         { id: "dashboard", icon: LayoutGrid, text: "Dashboard", path: "/" },
         { id: "students", icon: Users, text: "O'quvchilar", path: "/students" },
@@ -10,23 +12,9 @@ function Sidebar() {
         { id: "sales", icon: DollarSign, text: "Sales", path: "/sales" },
     ];
 
-    const bottomItems = [
-        { id: "logout", icon: LogOut, text: "Chiqish", path: "/logout", className: "text-red-500" },
-    ];
-
-    const MenuItem = ({ item }) => {
-        return (
-            <NavLink
-                to={item.path}
-                className={({ isActive }) =>
-                    `flex items-center w-full px-3 py-2 my-1 text-left rounded-lg transition-colors ${isActive ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-gray-100"
-                    } ${item.className || ""}`
-                }
-            >
-                <item.icon className="w-5 h-5 mr-3" />
-                <span>{item.text}</span>
-            </NavLink>
-        );
+    const handleLogout = () => {
+        localStorage.removeItem("accessToken");
+        navigate("/login");
     };
 
     return (
@@ -37,14 +25,27 @@ function Sidebar() {
 
             <div className="flex-1">
                 {menuItems.map((item) => (
-                    <MenuItem key={item.id} item={item} />
+                    <NavLink
+                        key={item.id}
+                        to={item.path}
+                        className={({ isActive }) =>
+                            `flex items-center w-full px-3 py-2 my-1 text-left rounded-lg transition-colors ${isActive ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-gray-100"}`
+                        }
+                    >
+                        <item.icon className="w-5 h-5 mr-3" />
+                        <span>{item.text}</span>
+                    </NavLink>
                 ))}
             </div>
 
             <div className="border-t pt-4">
-                {bottomItems.map((item) => (
-                    <MenuItem key={item.id} item={item} />
-                ))}
+                <button
+                    onClick={handleLogout}
+                    className="flex items-center w-full px-3 py-2 my-1 text-left rounded-lg text-red-500 hover:bg-gray-100"
+                >
+                    <LogOut className="w-5 h-5 mr-3" />
+                    <span>Chiqish</span>
+                </button>
             </div>
         </div>
     );
