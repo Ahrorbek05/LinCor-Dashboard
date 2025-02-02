@@ -1,4 +1,4 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 
 const StatCard = ({ number, label }) => {
     return (
@@ -8,29 +8,26 @@ const StatCard = ({ number, label }) => {
                 <div className="text-lg">{label}</div>
             </div>
             <div className="absolute inset-0 flex">
-                <div className="w-full h-full transform -skew-x-12 translate-x-1/4 bg-green-900 opacity-90"></div>
-                <div className="w-full h-full transform -skew-x-12 translate-x-1/4 bg-red-900 opacity-90"></div>
-                <div className="w-full h-full transform -skew-x-12 translate-x-1/4 bg-[#8B7355] opacity-90"></div>
+                <div className="w-1/3 h-full transform -skew-x-12 translate-x-1/4 bg-green-900 opacity-80"></div>
+                <div className="w-1/3 h-full transform -skew-x-12 translate-x-1/2 bg-red-900 opacity-80"></div>
+                <div className="w-1/3 h-full transform -skew-x-12 translate-x-3/4 bg-[#8B7355] opacity-80"></div>
             </div>
         </div>
     );
 };
 
+// **PropTypes qo‘shildi**
+StatCard.propTypes = {
+    number: PropTypes.string.isRequired,
+    label: PropTypes.node.isRequired, // `label` tarkibida JSX bo‘lishi mumkinligi uchun `node` ishlatildi
+};
+
 const StatsContainer = () => {
     return (
         <div className="flex gap-12">
-            <StatCard
-                number="3 000"
-                label="O'quvchilar soni"
-            />
-            <StatCard
-                number="250"
-                label="Video kurslar soni"
-            />
-            <StatCard
-                number="1 200 000"
-                label={<>Budjet <span className="text-sm">so'm</span></>}
-            />
+            <StatCard number="3 000" label="O'quvchilar soni" />
+            <StatCard number="250" label="Video kurslar soni" />
+            <StatCard number="1 200 000" label={<>Budjet <span className="text-sm">sum</span></>} />
         </div>
     );
 };

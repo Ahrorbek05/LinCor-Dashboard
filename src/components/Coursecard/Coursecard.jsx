@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import API from '../../api';
 import { Play } from 'lucide-react';
-import VideoModal from '../videomodal/videoModal';
 
 const CourseCard = () => {
   const [courses, setCourses] = useState([]);
@@ -15,7 +15,7 @@ const CourseCard = () => {
     try {
       const response = await API.get('/category');
       setCourses(response.data || []);
-    } catch (err) {
+    } catch {
       setError("Ma'lumotlarni yuklashda xatolik yuz berdi.");
     } finally {
       setLoading(false);
@@ -72,7 +72,7 @@ const CourseCard = () => {
               </span>
               <span className="text-[14px] ml-2">+ Workbook</span>
             </div>
-            <p className="text-[18px] font-bold mt-4">{course.price} so'm</p>
+            <p className="text-[18px] font-bold mt-4">{course.price} sum</p>
             <button
               onClick={() => handleClass(course)}
               className="bg-white text-blue-500 font-semibold text-lg px-5 py-1 mt-4 rounded-full shadow-md hover:bg-gray-100"
@@ -99,7 +99,7 @@ const AddCourseModal = ({ isOpen, onClose, onAddCourse }) => {
 
   const handleSubmit = () => {
     if (!courseName || !courseDesc || !coursePrice) {
-      alert("Iltimos, barcha maydonlarni to'ldiring.");
+      alert("Iltimos, barcha maydonlarni to&apos;ldiring.");
       return;
     }
     onAddCourse(courseName, courseDesc, coursePrice);
@@ -113,7 +113,7 @@ const AddCourseModal = ({ isOpen, onClose, onAddCourse }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-[650px]">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-[650px] relative">
         <button
           className="absolute top-2 right-3 text-gray-500 hover:text-red-500 focus:outline-none text-xl font-bold"
           aria-label="Close modal"
@@ -163,6 +163,12 @@ const AddCourseModal = ({ isOpen, onClose, onAddCourse }) => {
       </div>
     </div>
   );
+};
+
+AddCourseModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onAddCourse: PropTypes.func.isRequired,
 };
 
 export default CourseCard;

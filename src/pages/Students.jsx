@@ -1,4 +1,3 @@
-import React from 'react';
 import Studentbox from '../components/studentbox/studentcard';
 import { Bell, Search } from 'lucide-react';
 import Pagination from '../components/pagination/Pagination';

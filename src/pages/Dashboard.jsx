@@ -1,4 +1,3 @@
-import React from 'react';
 import { Bell, Search } from 'lucide-react';
 import Box from '../components/boxs/Box';
 import StudentRatings from '../components/lists/royxat';

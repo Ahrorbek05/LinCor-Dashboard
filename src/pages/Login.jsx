@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from 'react';
 import Cookies from "js-cookie";
 import API from "../api";
 import { useNavigate } from "react-router-dom";
@@ -27,8 +27,8 @@ const Login = () => {
             });
 
             const { accessToken, refreshToken } = response.data;
-            localStorage.setItem("accessToken", accessToken); // accessToken ni saqlash
-            Cookies.set("refreshToken", refreshToken, { expires: 7 }); // refreshToken ni saqlash
+            localStorage.setItem("accessToken", accessToken);
+            Cookies.set("refreshToken", refreshToken, { expires: 7 });
 
             alert("Login muvaffaqiyatli!");
 

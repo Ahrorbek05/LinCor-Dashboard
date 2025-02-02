@@ -1,6 +1,5 @@
-import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { LayoutGrid, Users, Video, DollarSign, Settings, LogOut } from "lucide-react";
+import { LayoutGrid, Users, Video, LogOut } from "lucide-react";
 
 function Sidebar() {
     const navigate = useNavigate();
@@ -9,7 +8,6 @@ function Sidebar() {
         { id: "dashboard", icon: LayoutGrid, text: "Dashboard", path: "/" },
         { id: "students", icon: Users, text: "O'quvchilar", path: "/students" },
         { id: "courses", icon: Video, text: "Video kurslar", path: "/courses" },
-        { id: "sales", icon: DollarSign, text: "Sales", path: "/sales" },
     ];
 
     const handleLogout = () => {

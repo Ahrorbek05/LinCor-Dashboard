@@ -1,5 +1,3 @@
-import React from 'react';
-
 const WorkbookInterface = () => {
   return (
     <div className="p-6 max-w-8xl">
@@ -21,7 +19,7 @@ const WorkbookInterface = () => {
             <line x1="12" y1="16" x2="12" y2="12"></line>
             <line x1="12" y1="8" x2="12.01" y2="8"></line>
           </svg>
-          Workbookni qo'shish
+          Workbookni qoshish
         </div>
       </div>
 

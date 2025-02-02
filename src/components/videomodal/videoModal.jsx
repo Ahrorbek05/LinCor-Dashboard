@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
+import PropTypes from 'prop-types';
 
 const VideoModal = ({ video_path, onClose }) => {
     const videoRef = useRef(null);
@@ -16,11 +17,10 @@ const VideoModal = ({ video_path, onClose }) => {
                     videoRef.current.play().catch(err => console.log("Autoplay error:", err));
                 }
             }, 300);
-        } else {
-            modalRef.current?.close();
+        } else if (modalRef.current?.open) {
+            modalRef.current.close();
         }
     }, [video_path]);
-
 
     const playVideo = () => {
         if (videoRef.current) {
@@ -37,7 +37,10 @@ const VideoModal = ({ video_path, onClose }) => {
                 <button
                     className="absolute top-2 right-3 text-gray-500 hover:text-red-500 focus:outline-none text-xl font-bold"
                     aria-label="Close modal"
-                    onClick={onClose}
+                    onClick={() => {
+                        modalRef.current?.close();
+                        onClose();
+                    }}
                 >
                     <X size={24} />
                 </button>
@@ -54,11 +57,16 @@ const VideoModal = ({ video_path, onClose }) => {
                         <source src={video_path} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
-
                 </div>
             </div>
         </dialog>
     );
+};
+
+// **PropTypes qo‘shildi**
+VideoModal.propTypes = {
+    video_path: PropTypes.string,
+    onClose: PropTypes.func.isRequired,
 };
 
 export default VideoModal;
