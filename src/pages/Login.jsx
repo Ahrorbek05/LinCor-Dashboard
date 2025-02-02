@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from 'react';
 import Cookies from "js-cookie";
 import API from "../api";
 import { useNavigate } from "react-router-dom";

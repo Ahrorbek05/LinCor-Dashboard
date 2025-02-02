@@ -1,5 +1,3 @@
-import React from 'react'
-
 const Coursecardtwo = () => {
   const cursobject = [
     { Cursname: "Topik |", description: "siz yigirma beshtadan darslarni olasiz yigirma beshtadan ortiq darslarni olasiz", coursedars: "24 Video", workbook: "Workbook", narx: "320 000 so'm" },

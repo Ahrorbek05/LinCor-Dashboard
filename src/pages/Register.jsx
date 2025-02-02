@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from 'react';
 import Cookies from "js-cookie";
 import API from "../api";
 import { useNavigate } from "react-router-dom";
@@ -60,7 +60,7 @@ const RegisterPage = () => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-                <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">Ro'yxatdan O'tish</h1>
+                <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">Royxatdan Otish</h1>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {[
                         { label: "Ism", name: "firstname", type: "text" },
@@ -94,7 +94,7 @@ const RegisterPage = () => {
                         type="submit"
                         className="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                        Ro'yxatdan O'tish
+                        Royxatdan Otish
                     </button>
                 </form>
             </div>

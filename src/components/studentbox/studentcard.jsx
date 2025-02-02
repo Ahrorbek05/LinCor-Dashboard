@@ -1,4 +1,3 @@
-import React from "react";
 import { DollarSign, Video, Calendar, MoreHorizontal } from "lucide-react";
 
 const StudentCard = () => {
@@ -29,9 +28,9 @@ const StudentCard = () => {
                     <div className="w-10 h-10 bg-green-100 flex items-center justify-center rounded-full">
                         <DollarSign className="text-green-600" size={20} />
                     </div>
-                    <p className="text-gray-700 text-[14px]">To'lov</p>
+                    <p className="text-gray-700 text-[14px]">Tolov</p>
                     <p className="ml-auto text-gray-700 font-medium text-[14px]">
-                        200 000 so'm
+                        200 000 sum
                     </p>
                 </div>
 
@@ -56,7 +55,7 @@ const StudentCard = () => {
             {/* Footer */}
             <div className="footer p-4 pt-4 flex items-center gap-2 text-gray-500 text-[14px]">
                 <Calendar size={16} />
-                <p>Qo'shilgan sana:</p>
+                <p>Qoshilgan sana:</p>
                 <p className="font-medium">29.09.2023</p>
             </div>
         </div>

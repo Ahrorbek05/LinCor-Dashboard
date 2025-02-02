@@ -1,4 +1,3 @@
-import React from 'react'
 import { Bell, Search } from 'lucide-react'
 import Coursecard from '../components/Coursecard/Coursecard'
 // import Coursecardtwo from '../components/Coursecard/Coursecardtwo'

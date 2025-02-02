@@ -1,4 +1,4 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 import './custom.css';
 import Pagination from '../pagination/Pagination';
 
@@ -23,6 +23,11 @@ const StatusBadge = ({ status }) => {
     );
 };
 
+// **StatusBadge uchun propTypes**
+StatusBadge.propTypes = {
+    status: PropTypes.string.isRequired,
+};
+
 const ProgressBar = ({ progress }) => {
     return (
         <div className="w-32 h-2 bg-gray-200 rounded-full">
@@ -32,6 +37,11 @@ const ProgressBar = ({ progress }) => {
             />
         </div>
     );
+};
+
+// **ProgressBar uchun propTypes**
+ProgressBar.propTypes = {
+    progress: PropTypes.number.isRequired,
 };
 
 const PercentageChange = ({ value, change }) => {
@@ -44,6 +54,12 @@ const PercentageChange = ({ value, change }) => {
             </span>
         </div>
     );
+};
+
+// **PercentageChange uchun propTypes**
+PercentageChange.propTypes = {
+    value: PropTypes.number.isRequired,
+    change: PropTypes.number.isRequired,
 };
 
 const StudentRatings = () => {
@@ -67,56 +83,15 @@ const StudentRatings = () => {
             change: 4,
             courses: 2,
             price: '700 000'
-        },
-        {
-            id: 3,
-            name: 'Bluenose',
-            image: 'https://picsum.photos/200/300',
-            status: "Boshlang'ich",
-            progress: 40,
-            change: 4,
-            courses: 2,
-            price: '700 000'
-        },
-        {
-            id: 4,
-            name: 'Bluenose',
-            image: 'https://picsum.photos/200/300',
-            status: "Boshlang'ich",
-            progress: 40,
-            change: 4,
-            courses: 2,
-            price: '700 000'
-        },
-        {
-            id: 5,
-            name: 'Bluenose',
-            image: 'https://picsum.photos/200/300',
-            status: "Boshlang'ich",
-            progress: 40,
-            change: 4,
-            courses: 2,
-            price: '700 000'
-        },
-        {
-            id: 6,
-            name: 'Bluenose',
-            image: 'https://picsum.photos/200/300',
-            status: "Boshlang'ich",
-            progress: 40,
-            change: 4,
-            courses: 2,
-            price: '700 000'
         }
     ];
 
     return (
         <div className="p-4">
-            {/* Header */}
             <div className="flex justify-between items-center mb-6">
                 <div>
-                    <h1 className="text-2xl font-semibold">O'quvchilar reytingi</h1>
-                    <p className="text-sm text-gray-500">O'quvchilarning monitoring ro'yxati</p>
+                    <h1 className="text-2xl font-semibold">Oquvchilar reytingi</h1>
+                    <p className="text-sm text-gray-500">Oquvchilarning monitoring royxati</p>
                 </div>
                 <div className="flex items-center gap-2">
                     <input
@@ -128,16 +103,15 @@ const StudentRatings = () => {
                 </div>
             </div>
 
-            {/* Table */}
             <div className="w-full border rounded-lg overflow-hidden">
                 <table className="w-full">
                     <thead className="bg-gray-100">
                         <tr className="border-b">
-                            <th className="text-left py-4 px-3">O'quvchilar</th>
+                            <th className="text-left py-4 px-3">Oquvchilar</th>
                             <th className="text-left py-4 px-3">Status</th>
                             <th className="text-left py-4 px-3">Darajasi</th>
                             <th className="text-left py-4 px-3">Mavjud kurslar</th>
-                            <th className="text-left py-4 px-3">Barcha to'lovlar</th>
+                            <th className="text-left py-4 px-3">Barcha tolovlar</th>
                         </tr>
                     </thead>
                 </table>
@@ -170,7 +144,7 @@ const StudentRatings = () => {
                                     </td>
                                     <td className="px-3">{student.courses}</td>
                                     <td className="px-3">
-                                        {student.price} <span className="text-sm text-gray-500">so'm</span>
+                                        {student.price} <span className="text-sm text-gray-500">sum</span>
                                     </td>
                                 </tr>
                             ))}
@@ -179,7 +153,6 @@ const StudentRatings = () => {
                 </div>
             </div>
 
-            {/* Pagination */}
             <div className="mt-4">
                 <Pagination />
             </div>

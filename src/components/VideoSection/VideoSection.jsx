@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Plus, Search, Bell, Play, Pencil, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
 import Workbooks from "../../components/workbook/Workbook";
@@ -17,11 +17,11 @@ const VideoSection = () => {
             try {
                 const response = await API.get("/video");
                 setVideos(response.data || []);
-            } catch (err) {
-                setError("Ma'lumotlarni yuklashda xatolik yuz berdi.");
-                setVideos([]);
+            } catch {
+                setError("Ma'lumotlarni yuklashda xatolik yuz berdi."); // Xato xabarini o'rnatish
+                setVideos([]); // Videolarni tozalash
             } finally {
-                setLoading(false);
+                setLoading(false); // Yuklashni tugatish
             }
         };
 
@@ -49,6 +49,7 @@ const VideoSection = () => {
         );
     }
 
+    // Agar xatolik bo'lsa, uni ko'rsatish
     if (error) {
         return <div className="text-red-500 text-center">{error}</div>;
     }
@@ -104,7 +105,7 @@ const VideoSection = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3 }}
             >
-                <h1 className="text-2xl font-bold text-gray-800">Boshlang'ich daraja</h1>
+                <h1 className="text-2xl font-bold text-gray-800">Boshlangich daraja</h1>
             </motion.div>
 
             <motion.div
@@ -115,7 +116,7 @@ const VideoSection = () => {
             >
                 <h2 className="text-[20px] font-semibold text-gray-800">Video darslik yuklash</h2>
                 <button className="flex items-center gap-2 text-md font-medium text-gray-700 bg-gray-200 py-1 px-4 rounded-md hover:bg-gray-300 transition">
-                    <Plus className="w-5 h-5" /> Video dars qo'shish
+                    <Plus className="w-5 h-5" /> Video dars qoshish
                 </button>
             </motion.div>
 
