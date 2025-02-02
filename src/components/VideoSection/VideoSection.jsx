@@ -3,7 +3,7 @@ import { Plus, Search, Bell, Play, Pencil, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
 import Workbooks from "../../components/workbook/Workbook";
 import API from "../../api";
-import VideoModal from "../videomodal/VideoModal";
+import VideoModal from "../videomodal/videoModal";
 import Loader from "../loader/Loader";
 
 const VideoSection = () => {
