@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { LayoutGrid, Users, Video, LogOut } from "lucide-react";
+import logotip from '../../../public/Lincor.png';
 
 function Sidebar() {
     const navigate = useNavigate();
@@ -16,10 +17,12 @@ function Sidebar() {
     };
 
     return (
-        <div className="w-56 h-screen p-4 border-r bg-white flex flex-col">
-            <div className="mb-8">
-                <h1 className="text-xl font-bold text-blue-600">LinCor</h1>
+        <div className="w-56 h-screen p-2 border-r bg-white flex flex-col">
+            <div className="mb-8 mt-4 flex items-center cursor-pointer">
+                <img className="w-24 h-auto" src={logotip} alt="Lincor dashboard logotip..." />
+                <h1 className="text-2xl font-semibold text-blue-600 tracking-wide">LinCor</h1>
             </div>
+
 
             <div className="flex-1">
                 {menuItems.map((item) => (
