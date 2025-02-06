@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 const API = axios.create({
-    baseURL: "https://38.242.195.171:8000/api/v1",
+    baseURL: "https://api.lincor.uz",
 });
 
 API.interceptors.request.use(
@@ -44,7 +44,7 @@ API.interceptors.response.use(
         const originalRequest = error.config;
 
         if (error.response?.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true; 
+            originalRequest._retry = true;
 
             try {
                 const refreshToken = Cookies.get("refreshToken");
