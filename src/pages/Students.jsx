@@ -1,46 +1,71 @@
-import Studentbox from '../components/studentbox/studentcard';
-import { Bell, Search } from 'lucide-react';
-import Pagination from '../components/pagination/Pagination';
-
-
+import { useEffect, useState } from "react";
+import API from "../api";
+import StudentCard from "../components/studentbox/studentcard";
+import Pagination from "../components/pagination/Pagination";
+import Header from "../components/header/header";
+import Loader from '../components/loader/Loader'
 const Students = () => {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 6;
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const response = await API.get("/user/all");
+        const userData = response.data?.data || response.data || [];
+        setUsers(Array.isArray(userData) ? userData : []);
+      } catch (error) {
+        console.error("Error fetching students:", error);
+        setError("O'quvchilarni yuklashda xatolik yuz berdi.");
+        setUsers([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStudents();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="max-w-[1240px] mx-auto m-6">
+        <Header />
+        <Loader />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-[1240px] mx-auto m-6">
+        <Header />
+        <p className="text-center text-red-500 mt-4">{error}</p>
+      </div>
+    );
+  }
+
+  const startIndex = (currentPage - 1) * usersPerPage;
+  const paginatedUsers = users.slice(startIndex, startIndex + usersPerPage);
+
   return (
     <div className="max-w-[1240px] mx-auto m-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center border p-2 w-[741px]">
-          <Search size={20} className="text-gray-500 mr-2" />
-          <input
-            type="text"
-            placeholder="Qidirish"
-            className="w-full outline-none text-gray-700"
-          />
-        </div>
-        <div className="flex gap-8">
-          <span className="flex items-center gap-4">
-            <img
-              className="w-12 h-12 rounded-full"
-              src="https://picsum.photos/200/300"
-              alt="Admin"
-            />
-            <span>
-              <h3 className="text-[#4C4C4C] text-[14px] font-[600]">George Kim</h3>
-              <p className="text-[#B3B3B3] text-[14px] font-[500]">Admin</p>
-            </span>
-          </span>
-          <button className="w-10 h-10 bg-gray-200 flex items-center justify-center rounded-full">
-            <Bell />
-          </button>
-        </div>
-      </div>
+      <Header />
       <div className="flex mt-4 flex-wrap gap-6">
-        <Studentbox />
-        <Studentbox />
-        <Studentbox />
-        <Studentbox />
-        <Studentbox />
-        <Studentbox />
+        {paginatedUsers.length > 0 ? (
+          paginatedUsers.map((student) => <StudentCard key={student.id} user={student} />)
+        ) : (
+          <p className="text-center text-gray-500">Hozircha o'quvchilar mavjud emas.</p>
+        )}
       </div>
-      <Pagination></Pagination>
+      <Pagination
+        totalUsers={users.length}
+        usersPerPage={usersPerPage}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 };
