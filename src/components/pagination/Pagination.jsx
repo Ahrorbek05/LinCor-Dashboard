@@ -1,21 +1,49 @@
-const Pagination = () => {
-  return (
-      <div>
-          <div className="flex items-center gap-2 mt-6">
-              <span className="text-sm text-gray-500">Oldingi sahifa</span>
-              {[1, 2, 3, 4, 5, 6, 7].map((page) => (
-                  <button
-                      key={page}
-                      className={`w-8 h-8 rounded-lg ${page === 1 ? 'bg-gray-900 text-white' : 'hover:bg-gray-100'}`}
-                  >
-                      {page}
-                  </button>
-              ))}
-              <span className="text-sm text-gray-500">Keyingi sahifa</span>
-          </div>
+import PropTypes from "prop-types";
 
-    </div>
-  )
-}
+const Pagination = ({ totalUsers, usersPerPage, currentPage, setCurrentPage }) => {
+    if (!totalUsers || !usersPerPage) return null;
 
-export default Pagination
+    const totalPages = Math.ceil(totalUsers / usersPerPage);
+    if (totalPages <= 1) return null;
+
+    return (
+        <div className="flex items-center gap-2 mt-6 justify-center">
+            <button
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                className="text-sm text-gray-500 hover:underline"
+                disabled={currentPage === 1}
+            >
+                Oldingi sahifa
+            </button>
+            {[...Array(totalPages)].map((_, index) => {
+                const page = index + 1;
+                return (
+                    <button
+                        key={page}
+                        onClick={() => setCurrentPage(page)}
+                        className={`w-8 h-8 rounded-lg ${currentPage === page ? "bg-gray-900 text-white" : "hover:bg-gray-100"
+                            }`}
+                    >
+                        {page}
+                    </button>
+                );
+            })}
+            <button
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                className="text-sm text-gray-500 hover:underline"
+                disabled={currentPage === totalPages}
+            >
+                Keyingi sahifa
+            </button>
+        </div>
+    );
+};
+
+Pagination.propTypes = {
+    totalUsers: PropTypes.number.isRequired,
+    usersPerPage: PropTypes.number.isRequired,
+    currentPage: PropTypes.number.isRequired,
+    setCurrentPage: PropTypes.func.isRequired,
+};
+
+export default Pagination;

@@ -1,58 +1,69 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import API from '../../api';
-import { Play } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
+import API from "../../api";
+import { Play } from "lucide-react";
+import Loader from "../loader/Loader";
 
 const CourseCard = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null);
   const navigate = useNavigate();
 
-  const fetchCourses = async () => {
-    try {
-      const response = await API.get('/category');
-      setCourses(response.data || []);
-    } catch {
-      setError("Ma'lumotlarni yuklashda xatolik yuz berdi.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await API.get("/category");
+        setCourses(Array.isArray(response.data) ? response.data : []);
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+        setError("Failed to load courses.");
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchCourses();
   }, []);
 
   const handleAddCourse = async (courseName, courseDesc, coursePrice) => {
     try {
-      await API.post('/category', {
+      const response = await API.post("/category", {
         category_name: courseName,
         category_desc: courseDesc,
         price: parseFloat(coursePrice),
         videos: [],
       });
-      fetchCourses();
+      setCourses((prevCourses) => [...prevCourses, response.data]);
+      setIsModalOpen(false);
     } catch (error) {
-      console.error("Xatolik yuz berdi:", error);
+      console.error("Error adding course:", error);
     }
   };
 
   const handleClass = (course) => {
-    navigate('/textbooks', { state: { selectedCourse: course } });
+    navigate("/textbooks", { state: { selectedCourse: course } });
   };
 
-  if (loading) return <div>Yuklanmoqda...</div>;
+  const playVideo = (videoUrl) => {
+    if (videoUrl && typeof videoUrl === "string") {
+      setSelectedVideo(videoUrl);
+    } else {
+      console.warn("No valid video URL provided.");
+    }
+  };
+
+  if (loading) return <div><Loader /></div>;
   if (error) return <div>{error}</div>;
 
   return (
     <div>
-      <h1 className='mt-6 text-2xl font-bold'>Kurslar</h1>
+      <h1 className="mt-6 text-2xl font-bold">Kurslar</h1>
       <div className="mt-4 flex flex-wrap gap-4">
         {courses.map((course, index) => (
-          <div key={index} className='bg-blue-500 text-white p-4 rounded-xl shadow-lg w-[400px] h-64'>
+          <div key={index} className="bg-blue-500 text-white p-4 rounded-xl shadow-lg w-[400px] h-64">
             <div className="flex justify-between items-center">
               <h3 className="text-[18px] font-bold">{course.category_name}</h3>
               <button
@@ -64,9 +75,13 @@ const CourseCard = () => {
             </div>
             <p className="text-sm mt-2">{course.category_desc}</p>
             <div className="flex items-center mt-2">
-              <div className="bg-white text-blue-500 p-2 rounded-full">
+              <button
+                className="bg-white text-blue-500 p-2 rounded-full"
+                onClick={() => playVideo(course.videos?.[0])}
+                disabled={!course.videos || course.videos.length === 0}
+              >
                 <Play />
-              </div>
+              </button>
               <span className="text-[14px] font-semibold ml-3">
                 {(course.videos || []).length} Video
               </span>
@@ -88,25 +103,27 @@ const CourseCard = () => {
         onClose={() => setIsModalOpen(false)}
         onAddCourse={handleAddCourse}
       />
+
+      {selectedVideo && <VideoPlayer videoUrl={selectedVideo} onClose={() => setSelectedVideo(null)} />}
     </div>
   );
 };
 
+
 const AddCourseModal = ({ isOpen, onClose, onAddCourse }) => {
-  const [courseName, setCourseName] = useState('');
-  const [courseDesc, setCourseDesc] = useState('');
-  const [coursePrice, setCoursePrice] = useState('');
+  const [courseName, setCourseName] = useState("");
+  const [courseDesc, setCourseDesc] = useState("");
+  const [coursePrice, setCoursePrice] = useState("");
 
   const handleSubmit = () => {
     if (!courseName || !courseDesc || !coursePrice) {
-      alert("Iltimos, barcha maydonlarni to&apos;ldiring.");
+      alert("Iltimos, barcha maydonlarni to‘ldiring.");
       return;
     }
     onAddCourse(courseName, courseDesc, coursePrice);
-    onClose();
-    setCourseName('');
-    setCourseDesc('');
-    setCoursePrice('');
+    setCourseName("");
+    setCourseDesc("");
+    setCoursePrice("");
   };
 
   if (!isOpen) return null;
@@ -116,7 +133,6 @@ const AddCourseModal = ({ isOpen, onClose, onAddCourse }) => {
       <div className="bg-white p-6 rounded-lg shadow-lg w-[650px] relative">
         <button
           className="absolute top-2 right-3 text-gray-500 hover:text-red-500 focus:outline-none text-xl font-bold"
-          aria-label="Close modal"
           onClick={onClose}
         >
           ✕
@@ -163,6 +179,30 @@ const AddCourseModal = ({ isOpen, onClose, onAddCourse }) => {
       </div>
     </div>
   );
+};
+
+const VideoPlayer = ({ videoUrl, onClose }) => {
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-[800px] relative">
+        <button
+          className="absolute top-2 right-3 text-gray-500 hover:text-red-500 text-xl font-bold"
+          onClick={onClose}
+        >
+          ✕
+        </button>
+        <video controls autoPlay className="w-full">
+          <source src={videoUrl} type="video/mp4" />
+          Brauzeringiz videoni qo‘llab-quvvatlamaydi.
+        </video>
+      </div>
+    </div>
+  );
+};
+
+VideoPlayer.propTypes = {
+  videoUrl: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 AddCourseModal.propTypes = {

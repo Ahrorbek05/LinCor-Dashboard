@@ -24,7 +24,6 @@ const App = () => {
 
   return (
     <div className="flex">
-      {/* Sidebar har doim ko'rinadi */}
       <Sidebar />
       <div className="flex-grow">
         {loading ? (
