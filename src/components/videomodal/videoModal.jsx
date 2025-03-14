@@ -1,69 +1,67 @@
-import { useEffect, useRef } from 'react';
-import { X } from 'lucide-react';
-import PropTypes from 'prop-types';
+import { useEffect, useRef } from "react";
+import { X } from "lucide-react";
+import PropTypes from "prop-types";
 
 const VideoModal = ({ video_path, onClose }) => {
     const videoRef = useRef(null);
     const modalRef = useRef(null);
 
-    console.log("Video manbasi:", video_path);
+    const computedVideoPath = video_path ? `https://api.lincor.uz/video${video_path}` : "";
 
     useEffect(() => {
-        if (video_path) {
-            modalRef.current?.showModal();
+        if (computedVideoPath && videoRef.current) {
+            const videoElement = videoRef.current;
 
-            setTimeout(() => {
-                if (videoRef.current) {
-                    videoRef.current.play().catch(err => console.log("Autoplay error:", err));
-                }
-            }, 300);
-        } else if (modalRef.current?.open) {
-            modalRef.current.close();
+            videoElement.muted = true;
+            videoElement.play()
+                .then(() => {
+                    videoElement.muted = false;
+                })
+                .catch((error) => console.warn("Video play error:", error));
         }
-    }, [video_path]);
+    }, [computedVideoPath]);
 
-    const playVideo = () => {
+    const handleClose = () => {
         if (videoRef.current) {
-            console.log("Video tayyor:", videoRef.current.currentSrc);
-            videoRef.current.play().catch((error) => {
-                console.log("Autoplay error:", error);
-            });
+            videoRef.current.pause();
+        }
+        onClose();
+    };
+
+    const handleOverlayClick = (e) => {
+        if (modalRef.current && !modalRef.current.contains(e.target)) {
+            handleClose();
         }
     };
 
+    if (!computedVideoPath) return null;
+
     return (
-        <dialog ref={modalRef} className="modal rounded-md shadow-xl">
-            <div className="modal-box relative w-[800px] p-6 bg-white rounded-lg shadow-lg border">
+        <div
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            onClick={handleOverlayClick}
+        >
+            <div
+                ref={modalRef}
+                className="bg-white p-6 rounded-lg shadow-lg w-[800px] relative"
+            >
                 <button
                     className="absolute top-2 right-3 text-gray-500 hover:text-red-500 focus:outline-none text-xl font-bold"
-                    aria-label="Close modal"
-                    onClick={() => {
-                        modalRef.current?.close();
-                        onClose();
-                    }}
+                    onClick={handleClose}
                 >
                     <X size={24} />
                 </button>
                 <div className="mt-4">
-                    <video
-                        ref={videoRef}
-                        key={video_path}
-                        controls
-                        autoPlay
-                        muted
-                        className="w-full rounded-lg"
-                        onCanPlay={playVideo}
-                    >
-                        <source src={video_path} type="video/mp4" />
+                    <video ref={videoRef} controls className="w-full rounded-lg">
+                        <source src={computedVideoPath} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
                 </div>
             </div>
-        </dialog>
+        </div>
     );
 };
 
-// **PropTypes qo‘shildi**
 VideoModal.propTypes = {
     video_path: PropTypes.string,
     onClose: PropTypes.func.isRequired,
