@@ -52,7 +52,7 @@ const VideoModal = ({ video_path, onClose }) => {
                     <X size={24} />
                 </button>
                 <div className="mt-4">
-                    <video ref={videoRef} controls className="w-full rounded-lg">
+                    <video ref={videoRef} controls className="w-full h-[500px] object-cover rounded-lg">
                         <source src={computedVideoPath} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
