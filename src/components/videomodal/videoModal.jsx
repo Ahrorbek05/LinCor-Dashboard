@@ -6,12 +6,12 @@ const VideoModal = ({ video_path, onClose }) => {
     const videoRef = useRef(null);
     const modalRef = useRef(null);
 
-    const computedVideoPath = video_path ? `https://api.lincor.uz/video${video_path}` : "";
+
+    const computedVideoPath = video_path ? `https://api.lincor.uz/video/${video_path}` : "";
 
     useEffect(() => {
         if (computedVideoPath && videoRef.current) {
             const videoElement = videoRef.current;
-
             videoElement.muted = true;
             videoElement.play()
                 .then(() => {

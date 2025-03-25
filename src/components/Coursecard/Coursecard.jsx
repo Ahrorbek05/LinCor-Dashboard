@@ -51,10 +51,12 @@ const CourseCard = () => {
   const playVideo = (video_path) => {
     if (video_path && typeof video_path === "string") {
       setSelectedVideo(video_path);
+      setIsModalOpen(true);
     } else {
-      console.warn("No valid video URL provided."); 
+      console.warn("No valid video URL provided.");
     }
   };
+
 
   if (loading) return <Loader />;
   if (error) return <div>{error}</div>;
@@ -103,11 +105,16 @@ const AddCourseModal = ({ isOpen, onClose, onAddCourse }) => {
       alert("Iltimos, barcha maydonlarni to‘ldiring.");
       return;
     }
-    onAddCourse(courseName, courseDesc, coursePrice);
+    if (isNaN(coursePrice) || parseFloat(coursePrice) <= 0) {
+      alert("Narx to‘g‘ri kiritilishi kerak.");
+      return;
+    }
+    onAddCourse(courseName, courseDesc, parseFloat(coursePrice));
     setCourseName("");
     setCourseDesc("");
     setCoursePrice("");
   };
+
 
   if (!isOpen) return null;
 
